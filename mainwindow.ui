@@ -102,7 +102,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Unscaled</string>
+     <string>Unscalable</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -115,7 +115,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Scaled</string>
+     <string>Scalable</string>
     </property>
    </widget>
    <widget class="QLabel" name="scalableLabel">
