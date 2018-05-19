@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     ui->nonScalableResult->hide();
+    ui->scalableResult->hide();
 }
 
 MainWindow::~MainWindow()
@@ -109,14 +110,12 @@ void MainWindow::on_scalableButton_clicked()
                 int to = i + 1 == tCount
                         ? elCount
                         : std::floor(elCount / tCount) * (i + 1);
-                qDebug("Running on p %d, taking from %d to %d" , i, from, to);
                 G[i] = i > 0 ? G[i - 1] + list[from] : list[from];
                 L[from] = list[from];
                 for(int j = from + 1; j < to; j++){
                     G[i] += list[j];
                     L[j] =  j == from ? list[j] : list[j] + L[j - 1];
                 }
-                qDebug("Local sum is %d" , G[i]);
             }
 
         }
@@ -132,7 +131,6 @@ void MainWindow::on_scalableButton_clicked()
                     : std::floor(elCount / tCount) * (i + 1);
 
             for(int j = from; j < to; j++){
-                qDebug("Summing %d %d %d" , from, j, L[j]);
                 Y[j] = L[j] + (i == 0 ? 0 : G[i - 1]);
             }
         }
@@ -151,6 +149,11 @@ void MainWindow::on_scalableButton_clicked()
         ui->scalableResultList->addItem(QString::fromStdString(std::to_string(Y[i])));
     }
 
+    auto result = QString("Result: ");
+    result.append(QString::fromStdString(std::to_string(G[tCount - 1])));
+
+    ui->scalableResult->show();
+    ui->scalableResult->setText(result);
 }
 
 void MainWindow::on_scalableButtonOptimized_clicked()
@@ -198,4 +201,10 @@ void MainWindow::on_scalableButtonOptimized_clicked()
     for (int i = 0; i < elCount; i++) {
         ui->scalableResultList->addItem(QString::fromStdString(std::to_string(L[i])));
     }
+
+    auto result = QString("Result: ");
+    result.append(QString::fromStdString(std::to_string(G[tCount - 1])));
+
+    ui->scalableResult->show();
+    ui->scalableResult->setText(result);
 }
