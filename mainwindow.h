@@ -18,6 +18,8 @@ public:
 private slots:
     void on_nonScalableButton_clicked();
 
+    void on_scalableButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
