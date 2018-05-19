@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->nonScalableResult->hide();
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +21,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_nonScalableButton_clicked()
 {
     ui->nonScalableList->clear();
-    ui->resultList->clear();
+    ui->nonScalableResultList->clear();
     int elCount = ui->nonScalableSpinBox->value();
     int list[elCount];
     for (int i = 0; i < elCount; i++) {
@@ -70,10 +72,13 @@ void MainWindow::on_nonScalableButton_clicked()
     }
 
     for (int i = 0; i < elCount; i++) {
-        ui->resultList->addItem(QString::fromStdString(std::to_string(y[i])));
+        ui->nonScalableResultList->addItem(QString::fromStdString(std::to_string(y[i])));
     }
+    auto result = QString("Result: ");
+    result.append(QString::fromStdString(std::to_string(y[elCount - 1])));
 
-
+    ui->nonScalableResult->show();
+    ui->nonScalableResult->setText(result);
 
 }
 
