@@ -35,16 +35,37 @@ void MainWindow::on_nonScalableButton_clicked()
 
 #pragma omp parallel num_threads(elCount)
     {
+
+        //Copy values
 #pragma omp for ordered
         for(int i = 0; i < elCount; i++ )
         {
 #pragma omp ordered
             {
-                qDebug("Zapis hodnoty %d do policka %d na vlakne ID: %d\n", list[i], i, omp_get_thread_num());
+                //qDebug("Zapis hodnoty %d do policka %d na vlakne ID: %d\n", list[i], i, omp_get_thread_num());
                 y[i] = list[i];
             }
         }
 
+        for(int j = 0; j < std::log(elCount); j++){
+#pragma omp for ordered
+            for(int i = std::pow(2,j); i < elCount; i++ )
+            {
+#pragma omp ordered
+                {
+                    y[i] = y[i] + list[i - (int)std::pow(2,j)];
+                }
+            }
+
+#pragma omp for ordered
+            for(int i = std::pow(2,j); i < elCount; i++ )
+            {
+#pragma omp ordered
+                {
+                   list[i] = y[i];
+                }
+            }
+        }
 
     }
 
