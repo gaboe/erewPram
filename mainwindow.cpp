@@ -38,13 +38,11 @@ void MainWindow::on_nonScalableButton_clicked()
 #pragma omp parallel num_threads(elCount)
     {
 
-        //Copy values
 #pragma omp for ordered
         for(int i = 0; i < elCount; i++ )
         {
 #pragma omp ordered
             {
-                //qDebug("Zapis hodnoty %d do policka %d na vlakne ID: %d\n", list[i], i, omp_get_thread_num());
                 y[i] = list[i];
             }
         }
