@@ -82,6 +82,8 @@ void MainWindow::on_scalableButton_clicked()
 {
     ui->scalableList->clear();
     ui->scalableResultList->clear();
+    ui->scalableGlobalResultList->clear();
+    ui->scalableLocalResultList->clear();
     int elCount = ui->scalableSpinBox->value();
     int tCount = ui->scalableSpinBox_2->value();
 
@@ -92,8 +94,9 @@ void MainWindow::on_scalableButton_clicked()
     }
 
 
-    int S[elCount];
-    int Z[tCount];
+    int L[elCount];
+    int G[tCount];
+    int Y[elCount];
 #pragma omp parallel num_threads(tCount)
     {
 
@@ -107,13 +110,47 @@ void MainWindow::on_scalableButton_clicked()
                         ? elCount
                         : std::floor(elCount / tCount) * (i + 1);
                 qDebug("Running on p %d, taking from %d to %d" , i, from, to);
-                Z[i] = list[from];
+                G[i] = i > 0 ? G[i - 1] + list[from] : list[from];
+                //L[from] = G[i];
+                L[from] = list[from];
                 for(int j = from + 1; j < to; j++){
-                    Z[i] += list[j];
+                    G[i] += list[j];
+                    //L[j] = G[i];
+                    L[j] =  j == from ? list[j] : list[j] + L[j - 1];
                 }
-                qDebug("Local sum is %d" , Z[i]);
+                qDebug("Local sum is %d" , G[i]);
             }
 
         }
     }
+#pragma omp for ordered
+    for(int i = 0; i < tCount; i++ )
+    {
+#pragma omp ordered
+        {
+            int from = std::floor(elCount / tCount) * (i);
+            int to = i + 1 == tCount
+                    ? elCount
+                    : std::floor(elCount / tCount) * (i + 1);
+
+            for(int j = from; j < to; j++){
+                qDebug("Summing %d %d %d" , from, j, L[j]);
+                Y[j] = L[j] + (i == 0 ? 0 : G[i - 1]);
+            }
+        }
+
+    }
+
+    for (int i = 0; i < elCount; i++) {
+        ui->scalableLocalResultList->addItem(QString::fromStdString(std::to_string(L[i])));
+    }
+
+    for (int i = 0; i < tCount; i++) {
+        ui->scalableGlobalResultList->addItem(QString::fromStdString(std::to_string(G[i])));
+    }
+
+    for (int i = 0; i < elCount; i++) {
+        ui->scalableResultList->addItem(QString::fromStdString(std::to_string(Y[i])));
+    }
+
 }

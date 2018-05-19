@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>986</width>
-    <height>471</height>
+    <width>1340</width>
+    <height>527</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -131,7 +131,7 @@
      <string>Size of array</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="scalableResultList">
+   <widget class="QListWidget" name="scalableLocalResultList">
     <property name="geometry">
      <rect>
       <x>690</x>
@@ -228,13 +228,33 @@
      <string>Num of threads</string>
     </property>
    </widget>
+   <widget class="QListWidget" name="scalableGlobalResultList">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>90</y>
+      <width>171</width>
+      <height>321</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="scalableResultList">
+    <property name="geometry">
+     <rect>
+      <x>1050</x>
+      <y>90</y>
+      <width>171</width>
+      <height>321</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>986</width>
+     <width>1340</width>
      <height>21</height>
     </rect>
    </property>
