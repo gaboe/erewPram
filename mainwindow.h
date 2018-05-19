@@ -20,6 +20,8 @@ private slots:
 
     void on_scalableButton_clicked();
 
+    void on_scalableButtonOptimized_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
